@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-TRAE Brain | Smart City Command Center</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Unified Header -->
+        <header>
+            <div class="logo-section">
+                <div class="pulse-dot"></div>
+                <h1>AI-TRAE BRAIN</h1>
+            </div>
+
+            <nav class="dashboard-switcher">
+                <button onclick="switchDashboard('traffic')" class="btn-switch active" id="btn-traffic">
+                    <i class="fas fa-traffic-light"></i> Traffic
+                </button>
+                <button onclick="switchDashboard('pothole')" class="btn-switch" id="btn-pothole">
+                    <i class="fas fa-road"></i> Potholes
+                </button>
+                <button onclick="switchDashboard('suspicious')" class="btn-switch" id="btn-suspicious">
+                    <i class="fas fa-user-shield"></i> Suspicious
+                </button>
+            </nav>
+
+            <div class="status-indicators">
+                <div id="connection-status" class="status-tag disconnected">OFFLINE</div>
+                <div id="system-status" class="status-tag normal">SYSTEM: READY</div>
+            </div>
+        </header>
+
+        <!-- 1. Traffic Monitoring Dashboard -->
+        <main class="dashboard-grid" id="traffic-dashboard">
+            <!-- Video & Signals Layout -->
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; grid-column: span 2;">
+                <!-- Video Panel -->
+                <section class="video-feed-section">
+                    <div class="section-title">
+                        <span><i class="fas fa-video icon"></i> SMART TRAFFIC LIVE FEED (A, B, C)</span>
+                        <span id="traffic-status-label" class="status-tag">IDLE</span>
+                    </div>
+                    <div class="video-container">
+                        <div class="status-badge live" id="traffic-live-badge" style="display:none">
+                            <div class="dot"></div> LIVE
+                        </div>
+                        <img id="main-video-feed" src="placeholder.jpg" alt="Traffic Feed">
+                    </div>
+                    <!-- Traffic Controls -->
+                    <div class="controls-panel">
+                        <form id="upload-form" class="controls-panel">
+                            <div class="btn-secondary" style="padding: 0.5rem; display: flex; gap: 0.5rem; border-radius: 0.75rem;">
+                                <input type="file" id="fileA" accept="video/mp4" hidden>
+                                <button type="button" class="btn btn-secondary" onclick="document.getElementById('fileA').click()">Cam A</button>
+                                <input type="file" id="fileB" accept="video/mp4" hidden>
+                                <button type="button" class="btn btn-secondary" onclick="document.getElementById('fileB').click()">Cam B</button>
+                                <input type="file" id="fileC" accept="video/mp4" hidden>
+                                <button type="button" class="btn btn-secondary" onclick="document.getElementById('fileC').click()">Cam C</button>
+                            </div>
+                            <button type="submit" id="start-btn" class="btn btn-primary">
+                                <i class="fas fa-play"></i> START ANALYSIS
+                            </button>
+                            <button type="button" id="stop-btn" class="btn btn-error" style="display:none">
+                                <i class="fas fa-stop"></i> STOP
+                            </button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Professional Traffic Lights Section -->
+                <section class="signals-visual-section">
+                    <div class="section-title">
+                        <span><i class="fas fa-traffic-light icon"></i> SIGNAL STATUS</span>
+                    </div>
+                    <div class="signals-container" style="display: flex; justify-content: space-around; height: 100%; align-items: center;">
+                        <!-- Cam A Light -->
+                        <div class="signal-node" id="signal-A">
+                            <div class="node-label">CAM A</div>
+                            <div class="traffic-light-vertical">
+                                <div class="light red" id="light-A-red"></div>
+                                <div class="light yellow" id="light-A-yellow"></div>
+                                <div class="light green" id="light-A-green"></div>
+                            </div>
+                            <div class="timer" id="timer-A">00s</div>
+                        </div>
+                        <!-- Cam B Light -->
+                        <div class="signal-node" id="signal-B">
+                            <div class="node-label">CAM B</div>
+                            <div class="traffic-light-vertical">
+                                <div class="light red" id="light-B-red"></div>
+                                <div class="light yellow" id="light-B-yellow"></div>
+                                <div class="light green" id="light-B-green"></div>
+                            </div>
+                            <div class="timer" id="timer-B">00s</div>
+                        </div>
+                        <!-- Cam C Light -->
+                        <div class="signal-node" id="signal-C">
+                            <div class="node-label">CAM C</div>
+                            <div class="traffic-light-vertical">
+                                <div class="light red" id="light-C-red"></div>
+                                <div class="light yellow" id="light-C-yellow"></div>
+                                <div class="light green" id="light-C-green"></div>
+                            </div>
+                            <div class="timer" id="timer-C">00s</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Alerts & Reasoning -->
+            <section class="intelligence-section">
+                <div class="section-title">
+                    <span><i class="fas fa-bolt icon"></i> ACTIVE ALERTS</span>
+                </div>
+                <div id="alerts-container" class="alerts-grid">
+                    <div class="placeholder-view"><p>No active incidents</p></div>
+                </div>
+
+                <div class="section-title" style="margin-top: 1rem;">
+                    <span><i class="fas fa-microchip icon"></i> TRAE REASONING</span>
+                </div>
+                <div id="reasoning-logs" class="logs-terminal"></div>
+            </section>
+
+            <!-- Signal Strategy -->
+            <section class="strategy-section">
+                <div class="section-title">
+                    <span><i class="fas fa-project-diagram icon"></i> COORDINATED STRATEGY</span>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Location</th>
+                            <th>Timing</th>
+                            <th>Action</th>
+                            <th>Reasoning</th>
+                        </tr>
+                    </thead>
+                    <tbody id="signal-body"></tbody>
+                </table>
+            </section>
+
+            <!-- Flow & Scenarios -->
+            <section class="scenarios-section">
+                <div class="section-title">
+                    <span><i class="fas fa-flask icon"></i> SIMULATION CONTROLS</span>
+                </div>
+                <div class="controls-panel" style="justify-content: center;">
+                    <button onclick="setScenario('normal')" class="btn btn-secondary">NORMAL</button>
+                    <button onclick="setScenario('congestion')" class="btn btn-secondary" style="color: var(--warning)">CONGESTION</button>
+                    <button onclick="setScenario('accident')" class="btn btn-secondary" style="color: var(--error)">ACCIDENT</button>
+                </div>
+                <div id="current-scenario-label" class="status-tag" style="text-align: center; width: 100%; margin-top: 1rem;">SCENARIO: NORMAL</div>
+            </section>
+        </main>
+
+        <!-- 2. Pothole Monitoring Dashboard -->
+        <main class="dashboard-grid" id="pothole-dashboard" style="display:none">
+            <section class="video-feed-section">
+                <div class="section-title">
+                    <span><i class="fas fa-road icon"></i> POTHOLE DETECTION FEED</span>
+                    <div id="pothole-severity-badge" class="severity-indicator sev-low" style="display:none">LOW SEVERITY</div>
+                </div>
+                <div class="video-container" id="pothole-video-container">
+                    <div id="pothole-placeholder" class="placeholder-view">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Upload video or start camera to begin</p>
+                    </div>
+                    <video id="pothole-video" style="display:none"></video>
+                    <div id="pothole-loader" class="placeholder-view" style="display:none">
+                        <i class="fas fa-circle-notch fa-spin"></i>
+                        <p>AI analyzing road conditions...</p>
+                    </div>
+                </div>
+                <div class="controls-panel">
+                    <input type="file" id="pothole-file" hidden accept="video/*">
+                    <button id="pothole-upload-btn" onclick="document.getElementById('pothole-file').click()" class="btn btn-secondary">
+                        <i class="fas fa-file-video"></i> UPLOAD VIDEO
+                    </button>
+                    <button id="pothole-cam-btn" class="btn btn-primary">
+                        <i class="fas fa-camera"></i> LIVE CAMERA
+                    </button>
+                    <button id="pothole-stop-btn" class="btn btn-error" style="display:none">
+                        <i class="fas fa-stop"></i> STOP CAMERA
+                    </button>
+                </div>
+            </section>
+
+            <section class="side-panel">
+                <div class="section-title">
+                    <span><i class="fas fa-terminal icon"></i> AGENT LOGS</span>
+                </div>
+                <div id="pothole-logs" class="logs-terminal"></div>
+
+                <div class="section-title">
+                    <span><i class="fas fa-exclamation-triangle icon"></i> DETECTION ALERTS</span>
+                </div>
+                <div id="pothole-alerts" class="alerts-grid"></div>
+            </section>
+
+            <section class="json-section" style="grid-column: span 2;">
+                <div class="json-container">
+                    <div class="json-header" onclick="toggleJson('pothole-json-body')">
+                        <span><i class="fas fa-code"></i> RAW ANALYTICS (JSON)</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div id="pothole-json-body" class="json-body">
+                        <pre id="pothole-json-output">// Waiting for data...</pre>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- 3. Suspicious Activity Dashboard -->
+        <main class="dashboard-grid" id="suspicious-dashboard" style="display:none">
+            <section class="video-feed-section">
+                <div class="section-title">
+                    <span><i class="fas fa-shield-alt icon"></i> SURVEILLANCE FEED</span>
+                    <div id="suspicious-severity-badge" class="severity-indicator sev-high" style="display:none">HIGH SEVERITY</div>
+                </div>
+                <div class="video-container" id="suspicious-video-container">
+                    <div id="suspicious-placeholder" class="placeholder-view">
+                        <i class="fas fa-user-secret"></i>
+                        <p>Awaiting surveillance input</p>
+                    </div>
+                    <video id="suspicious-video" style="display:none"></video>
+                    <div id="people-counter" class="status-badge" style="display:none; left: auto; right: 1rem; background: var(--accent); color: var(--bg-dark);">
+                        <i class="fas fa-users"></i> <span id="people-count-val">0</span>
+                    </div>
+                    <div id="suspicious-loader" class="placeholder-view" style="display:none">
+                        <i class="fas fa-shield-virus fa-spin"></i>
+                        <p>Scanning for suspicious behavior...</p>
+                    </div>
+                </div>
+                <div class="controls-panel">
+                    <input type="file" id="suspicious-file" hidden accept="video/*">
+                    <button id="suspicious-upload-btn" onclick="document.getElementById('suspicious-file').click()" class="btn btn-secondary">
+                        <i class="fas fa-file-video"></i> UPLOAD VIDEO
+                    </button>
+                    <button id="suspicious-cam-btn" class="btn btn-primary">
+                        <i class="fas fa-video"></i> START MONITORING
+                    </button>
+                    <button id="suspicious-stop-btn" class="btn btn-error" style="display:none">
+                        <i class="fas fa-stop"></i> STOP MONITORING
+                    </button>
+                </div>
+            </section>
+
+            <section class="side-panel">
+                <div class="section-title">
+                    <span><i class="fas fa-terminal icon"></i> SECURITY LOGS</span>
+                </div>
+                <div id="suspicious-logs" class="logs-terminal"></div>
+
+                <div class="section-title">
+                    <span><i class="fas fa-bell icon"></i> SECURITY ALERTS</span>
+                </div>
+                <div id="suspicious-alerts" class="alerts-grid"></div>
+            </section>
+
+            <section class="json-section" style="grid-column: span 2;">
+                <div class="json-container">
+                    <div class="json-header" onclick="toggleJson('suspicious-json-body')">
+                        <span><i class="fas fa-code"></i> RAW ANALYTICS (JSON)</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div id="suspicious-json-body" class="json-body">
+                        <pre id="suspicious-json-output">// Waiting for data...</pre>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- JSON Modal for Traffic -->
+    <div id="json-modal" class="modal" style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; padding: 2rem; overflow-y: auto;">
+        <div style="background: var(--bg-card); max-width: 900px; margin: 0 auto; border-radius: var(--radius-xl); padding: 2rem; border: 1px solid var(--bg-accent);">
+            <div class="section-title">
+                <span><i class="fas fa-file-code"></i> RUN SUMMARY</span>
+                <button onclick="closeModal()" class="btn btn-secondary"><i class="fas fa-times"></i></button>
+            </div>
+            <pre id="final-json-output" class="json-body" style="max-height: 70vh; margin-top: 1rem; border-radius: 0.5rem;"></pre>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function toggleJson(id) {
+            const body = document.getElementById(id);
+            const icon = body.previousElementSibling.querySelector('.fa-chevron-down');
+            if (body.style.display === 'none') {
+                body.style.display = 'block';
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                body.style.display = 'none';
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+    </script>
+</body>
+</html>

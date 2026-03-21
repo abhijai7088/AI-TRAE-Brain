@@ -1,0 +1,52 @@
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes emergency {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); filter: brightness(1.2); }
+    100% { transform: scale(1); }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-slideUp {
+    animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+.animate-emergency {
+    animation: emergency 1s infinite alternate;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #3a3a3a;
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #4a4a4a;
+}
+
+.dashboard-container {
+    font-family: 'Inter', sans-serif;
+}
+
+.font-mono {
+    font-family: 'JetBrains Mono', monospace;
+}
