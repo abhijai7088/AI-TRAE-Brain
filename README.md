@@ -1,111 +1,287 @@
-# 🚦 NETRA: AI-TRAE Brain - Unified Infrastructure Intelligence System
+# 🚦 NETRA: AI-TRAE Brain
 
-**Transforming raw urban data into real-time operational decisions using Multi-Agent AI reasoning.**
+### **Multi-Node Traffic & Safety Intelligence System using TRAE**
 
----
-
-## 🏙️ Project Vision
-**NETRA** (Networked Enhanced Traffic & Road Analytics) is an industry-grade, multi-node visual intelligence system. It provides a unified orchestration layer for smart cities, combining advanced computer vision with a specialized **TRAE (Traffic Reasoning & Action Engine)** to manage traffic flow, road safety, and public security from a single, high-performance command center.
-
-## 💡 Core Modules
-
-### 1. 🚥 Smart Traffic Monitoring
-- **Multi-Camera Grid**: Simultaneous processing of 3+ high-definition camera feeds (Cam A, B, C).
-- **Density-Based Signal Control**: Real-time traffic light state machine (RED → YELLOW → GREEN) that dynamically adjusts timings based on vehicle density.
-- **Emergency Override**: Automated "Green Wave" generation on Camera B upon accident detection to prioritize emergency vehicle flow.
-- **Predictive Flow**: Analyzes traffic propagation between nodes to mitigate congestion before it reaches critical levels.
-
-### 2. 🕳️ Pothole Monitoring & Road Safety
-- **High-Accuracy Detection**: Uses a fine-tuned YOLOv8 model (`Yolov8-fintuned-on-potholes.pt`) to identify road damage with high precision.
-- **Visual Persistence**: All detected potholes are highlighted with persistent bounding boxes throughout the video stream, creating a cumulative damage map.
-- **Risk Assessment**: Integrated **TRAE Agent** classifies road hazards into LOW, MEDIUM, or CRITICAL severity based on size and frequency.
-
-### 3. 🛡️ Suspicious Activity Surveillance
-- **3D Action Recognition**: Utilizes an **MC3_18 3D-Video architecture** with a 16-frame temporal buffer to detect human behavior like fighting or crowd surges.
-- **Person Tracking**: Real-time YOLO-based human counting and spatial tracking.
-- **Security Alerts**: Immediate WebSocket broadcasts of "THREAT DETECTED" events with visual proof.
-
-### 4. 👔 Unified Admin Control Hub
-- **Aggregated Analytics**: A centralized dashboard that fetches real-time health metrics from all three monitoring modules.
-- **Ticketing System**: Industry-standard ticketing workflow allowing administrators to generate, reply to, and close operational issues.
-- **Secure Access**: Protected by a military-grade login system with persistent session management.
-
-## 🧠 TRAE: The Reasoning Engine
-The heart of the system is the **TRAE (Traffic Reasoning & Action Engine)**. It provides **Explainable AI (XAI)** by logging every decision's rationale in real-time.
-
-- **Local Agent**: Normalizes raw data from camera nodes.
-- **Global Context Agent**: Maps road topology and understands inter-node dependencies.
-- **Decision Agent**: Orchestrates coordinated responses (e.g., "Enter Emergency Mode").
-- **Execution Agent**: Translates abstract logic into signal timings and UI alerts.
+> **“We are not controlling traffic lights — we are orchestrating city-wide intelligence.”**
 
 ---
 
-## 🛠️ Technical Stack
+## 🎥 Live Demo
 
-- **Computer Vision**: YOLOv8 (Ultralytics), MC3_18 3D-CNN (Torchvision), OpenCV.
-- **Backend**: FastAPI (Asynchronous Python), WebSockets, Multi-threading.
-- **Frontend**: React 18, Vite, GSAP (Animations), Tailwind CSS, Lenis (Smooth Scroll).
-- **Data Engineering**: Structured JSON logging, temporal frame buffering, image normalization (Albumentations).
+👉 **Watch Full Demo:**
+https://drive.google.com/file/d/1-WZHRPy0SH1oKAOXnQ5HoHp4rkG8ooTD/view?usp=sharing
 
-## 📁 Project Architecture
-```text
-/AI-TRAE_Brain
-├── /backend                    # FastAPI Server & AI Pipelines
-│   ├── /app/pipeline           # Specialized AI Logic (Traffic, Pothole, Suspicious)
-│   ├── engine.py               # Traffic State Machine & Grid Orchestrator
-│   ├── detector.py             # Unified Object Detection Wrapper
-│   └── backend_api.py          # REST & WebSocket Endpoints
-├── /NETRA-frontend             # React-based Command Center
-│   ├── /src/components         # Dashboard & UI Components
-│   └── /dist                   # Optimized Production Build
-├── /models                     # AI Model Weights (.pt, .pth)
-└── /demo_videos                # Sample Data for Simulations
+---
+
+## 🧠 Project Overview
+
+**NETRA (Networked Enhanced Traffic & Road Analytics)** is a **multi-camera intelligent urban monitoring system** that leverages a **TRAE-based multi-agent architecture** to:
+
+* Detect traffic conditions in real-time
+* Predict congestion before it happens
+* Identify accidents and suspicious activities
+* Coordinate responses across multiple locations
+
+Unlike traditional systems that operate per junction, **NETRA introduces coordinated, predictive, and explainable intelligence across the city.**
+
+---
+
+## 🚨 Problem Statement
+
+Urban environments face:
+
+* Traffic congestion and inefficient signal control
+* Delayed emergency response to accidents
+* Lack of coordination between traffic nodes
+* Limited real-time intelligence from CCTV systems
+
+---
+
+## 💡 Our Solution
+
+NETRA solves this by combining:
+
+✅ Multi-camera computer vision
+✅ Predictive traffic flow modeling
+✅ Incident detection (accidents + anomalies)
+✅ TRAE-based decision-making system
+
+👉 Result:
+**A unified intelligence layer that detects, predicts, and acts in real time.**
+
+---
+
+## 🧩 Key Features
+
+### 🚥 1. Multi-Node Traffic Intelligence
+
+* Real-time vehicle detection using **YOLOv8**
+* Traffic density classification (LOW / MEDIUM / HIGH)
+* Cross-camera traffic flow understanding (A → B → C)
+
+---
+
+### 🔮 2. Predictive Traffic Flow (Core Innovation)
+
+* Estimates traffic propagation across locations
+* Calculates **ETA of congestion using distance & speed**
+* Generates alerts like:
+
+```bash
+⚠️ Traffic from A will reach B in 2 minutes
 ```
 
 ---
 
-## 🚀 Quick Start
+### 🚨 3. Accident Detection & Emergency Response
 
-### 1. Prerequisites
-- Python 3.10+
-- Node.js 18+
-- GPU recommended (for 3D model inference)
+* Detects collisions and abnormal vehicle behavior
+* Assigns **CRITICAL risk level**
+* Automatically:
 
-### 2. Installation
+  * Clears routes
+  * Adjusts traffic signals
+  * Enables emergency flow
+
+---
+
+### 🛡️ 4. Suspicious Activity Detection
+
+* Detects:
+
+  * Crowd anomalies
+  * Abnormal motion
+  * Unusual behavior patterns
+* Uses temporal analysis + object tracking
+
+---
+
+### 🌐 5. Multi-Camera Coordination (UNIQUE)
+
+* Cameras are **not isolated**
+* System understands:
+
+  * Road topology
+  * Traffic direction
+* Coordinates actions across locations
+
+---
+
+### 🧠 6. TRAE: Traffic Reasoning & Action Engine
+
+The core intelligence layer of NETRA.
+
+#### 🔹 Agents:
+
+| Agent            | Role                        |
+| ---------------- | --------------------------- |
+| Local Agent      | Processes camera-level data |
+| Flow Agent       | Detects traffic direction   |
+| Time Agent       | Estimates travel time       |
+| Prediction Agent | Predicts congestion         |
+| Risk Agent       | Detects incidents           |
+| Decision Agent   | Generates actions           |
+| Execution Agent  | Outputs final JSON          |
+
+---
+
+### 📦 7. Explainable AI Output (XAI)
+
+Every decision is transparent:
+
+```json
+{
+  "flow_direction": "A_to_B",
+  "prediction": "B in 2 mins",
+  "incident": "accident at A",
+  "action": "divert traffic to C"
+}
+```
+
+---
+
+## 🏗️ System Architecture
+
+```text
+Camera Feeds (A, B, C)
+        ↓
+YOLO Detection + Video Analysis
+        ↓
+Traffic & Incident Processing
+        ↓
+TRAE Multi-Agent System
+        ↓
+Prediction + Decision Engine
+        ↓
+JSON Output + Dashboard UI
+```
+
+---
+
+## 🖥️ Dashboard & Demo Flow
+
+### 🎬 Live System Demonstration:
+
+1. **Normal Traffic State**
+2. **Congestion at Cam A**
+3. **TRAE predicts flow → Cam B**
+4. **Signal adjusted BEFORE congestion**
+5. **Accident detected at Cam A**
+6. **System diverts traffic to Cam C**
+
+---
+
+## 🛠️ Tech Stack
+
+### 🔹 AI & Computer Vision
+
+* YOLOv8 (Ultralytics)
+* OpenCV
+* MC3_18 3D CNN (Action Recognition)
+
+### 🔹 Backend
+
+* FastAPI
+* WebSockets
+* Python Multi-threading
+
+### 🔹 Frontend
+
+* React.js
+* Tailwind CSS
+* GSAP Animations
+
+### 🔹 AI Architecture
+
+* TRAE (Custom Multi-Agent System)
+* Structured JSON decision engine
+
+---
+
+## 📁 Project Structure
+
+```text
+/AI-TRAE_Brain
+├── /backend
+│   ├── /app/pipeline
+│   ├── engine.py
+│   ├── detector.py
+│   └── backend_api.py
+├── /NETRA-frontend
+│   ├── /src/components
+│   └── /dist
+├── /models
+├── /agents
+└── README.md
+```
+
+---
+
+## 🚀 Getting Started
+
+### 🔹 Backend
+
 ```bash
-# Clone the repository
-git clone https://github.com/your-repo/AI-TRAE-Brain.git
-cd AI-TRAE-Brain/backend
-
-# Install Python dependencies
+cd backend
 pip install -r requirements.txt
+python backend_api.py
+```
 
-# Setup Frontend
-cd ../NETRA-frontend
+---
+
+### 🔹 Frontend
+
+```bash
+cd NETRA-frontend
 npm install
 npm run build
 ```
 
-### 3. Launching the Hub
-**Start the Unified Backend:**
-```bash
-cd backend
-python backend_api.py
-```
-*The system will serve the built React frontend at `http://localhost:8000`*
+---
 
-### 🔐 Default Admin Credentials
-- **Access ID**: `abhi7088`
-- **Secure Password**: `12345`
+### 🌐 Access
+
+```bash
+http://localhost:8000
+```
 
 ---
 
-## 📈 Real-World Impact
-- **20% Reduction** in average urban travel time through proactive signal adjustments.
-- **Zero-Latency** incident reporting via optimized WebSocket broadcasts.
-- **Explainable Decision Making** for city operators through TRAE reasoning logs.
+## 🔐 Demo Credentials
+
+* **Username:** abhi7088
+* **Password:** 12345
+
+---
+
+## 📊 Real-World Impact
+
+* 🚗 Reduced congestion via predictive routing
+* 🚑 Faster emergency response
+* 🧠 Explainable decision-making for authorities
+* 🌍 Scalable to smart city infrastructure
+
+---
+
+## 🏆 Innovation Highlights
+
+* ✅ Multi-node coordination (rare in hackathons)
+* ✅ Predictive traffic intelligence
+* ✅ TRAE-based multi-agent reasoning
+* ✅ Real-time decision system
+* ✅ Explainable AI outputs
+
+---
+
+## 🔮 Future Scope
+
+* Integration with real CCTV networks
+* Smart city dashboards
+* Emergency service APIs
+* Live traffic routing for citizens
 
 ---
 
 ## 📜 License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+This project is licensed under the MIT License.
